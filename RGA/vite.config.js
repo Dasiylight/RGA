@@ -24,14 +24,12 @@ export default defineConfig({
         ],
     }),
   ],
-  devServer:{
+  server:{
       proxy:{
           '/api':{
-              target: 'http://localhost:8866',
+              target: 'http://localhost:8866/',
               changeOrigin: true,
-              pathRewrite:{
-                  '^/api': ''
-              }
+              rewrite: (path) => path.replace(/^\/api/, ""),
           }
       }
   }

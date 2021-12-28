@@ -51,7 +51,11 @@ export default {
       // this.$router.push('/sarcf')
       axios.post('/api/main/ans/addAnswer',data,{}).then((response)=>{
         console.log(response)
-        this.$router.push('/sarcf')
+        if(response.data.code == '500'){
+          condole.log('empty choice')
+        }else if (response.data.code == '200'){
+          this.$router.push('/sarcf')
+        }
       })
     }
   }
