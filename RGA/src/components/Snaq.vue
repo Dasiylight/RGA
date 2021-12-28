@@ -40,10 +40,10 @@ export default {
           quesPid: 3
         }
       ]
-      // axios.post('',data).then((response)=>{
-      //   console.log(response)
-      // })
-      this.$router.push('q1')
+      axios.post('/api/main/ans/addAnswer',data).then((response)=>{
+        console.log(response)
+        this.$router.push('q1')
+      })
 
     }
   }

@@ -47,10 +47,10 @@ export default {
           quesPid: 2
         }
       ]
-      this.$router.push('snaq')
-      // axios.post('',data,{}).then((response)=>{
-      //   this.$router.push('snaq')
-      // })      
+      // this.$router.push('snaq')
+      axios.post('/api/main/ans/addAnswer',data,{}).then((response)=>{
+        this.$router.push('snaq')
+      })      
     }
   }
 }

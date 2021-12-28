@@ -48,11 +48,11 @@ export default {
           quesPid: 1
         },
       ]
-      this.$router.push('/sarcf')
-      // axios.post('',data,{}).then((response)=>{
-      //   console.log(response)
-      //   this.$router.push('/sarcf')
-      // })
+      // this.$router.push('/sarcf')
+      axios.post('/api/main/ans/addAnswer',data,{}).then((response)=>{
+        console.log(response)
+        this.$router.push('/sarcf')
+      })
     }
   }
 }
