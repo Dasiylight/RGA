@@ -38,6 +38,8 @@
 
   // let $force 
   // let $touches
+  import axios from 'axios'
+
   export default{
     mounted(){
       this.init()
@@ -207,7 +209,7 @@
           formData.append('userid',1)
           formData.append('quesPid',4)
           formData.append('quesId',16)
-          axios.post('/api/main/ans/addClock',formData,{}).then((response)=>{
+          axios.post('/',formData,{}).then((response)=>{
             console.log(response)
             this.$router.push('q1a')
             // if(response.data.code == '500'){
