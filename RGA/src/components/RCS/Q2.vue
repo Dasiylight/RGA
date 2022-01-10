@@ -201,14 +201,26 @@
       // todo: 提交到服务器上
       onSubmit(){
         let MIME_TYPE = "image/png";
-        let imgURL = canvas.toDataURL(MIME_TYPE)
-        let dlink = document.createElement('a')
-        dlink.download = 'pic'
-        dlink.href = imgURL
-        dlink.dataset.downloadurl = [MIME_TYPE, dlink.download, dlink.href].join(':');
-        document.body.appendChild(dlink);
-        dlink.click();
-        document.body.removeChild(dlink);
+        canvas.toBlob((blob)=>{
+          let formData = new FormData()
+          formData.append('file',blob)
+          axios.post('/api/main/ans/addAnswer',blob,{}).then((response)=>{
+            console.log(response)
+            if(response.data.code == '500'){
+              condole.log('empty choice')
+            }else if (response.data.code == '200'){
+              this.$router.push('/sarcf')
+            }
+          })
+        })
+        // let imgURL = canvas.toDataURL(MIME_TYPE)
+        // let dlink = document.createElement('a')
+        // dlink.download = 'pic'
+        // dlink.href = imgURL
+        // dlink.dataset.downloadurl = [MIME_TYPE, dlink.download, dlink.href].join(':');
+        // document.body.appendChild(dlink);
+        // dlink.click();
+        // document.body.removeChild(dlink);
         this.$router.push('q1a')
       }
     }
