@@ -204,13 +204,17 @@
         canvas.toBlob((blob)=>{
           let formData = new FormData()
           formData.append('file',blob)
-          axios.post('/api/main/ans/addAnswer',blob,{}).then((response)=>{
+          formData.append('userid',1)
+          formData.append('quesPid',4)
+          formData.append('quesId',16)
+          axios.post('/api/main/ans/addAnswer',formData,{}).then((response)=>{
             console.log(response)
-            if(response.data.code == '500'){
-              condole.log('empty choice')
-            }else if (response.data.code == '200'){
-              this.$router.push('/sarcf')
-            }
+            this.$router.push('q1a')
+            // if(response.data.code == '500'){
+            //   condole.log('empty choice')
+            // }else if (response.data.code == '200'){
+            //   this.$router.push('q1a')
+            // }
           })
         })
         // let imgURL = canvas.toDataURL(MIME_TYPE)
@@ -221,7 +225,17 @@
         // document.body.appendChild(dlink);
         // dlink.click();
         // document.body.removeChild(dlink);
-        this.$router.push('q1a')
+
+        // todo: 压缩文件的函数
+        function compress(base64Img,callback){
+          const img = new Image()
+          img.addEventListener('load', function(e){
+            let radio = 2; //压缩比例
+            maxH = image.naturalHeight / radio
+            maxW = image.naturalWidth / radio
+            const canvas2 = document.createElement('canvas')
+          })
+        }
       }
     }
   }
