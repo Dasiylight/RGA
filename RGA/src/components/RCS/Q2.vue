@@ -234,6 +234,7 @@
             maxH = image.naturalHeight / radio
             maxW = image.naturalWidth / radio
             const canvas2 = document.createElement('canvas')
+            
           })
         }
       }
