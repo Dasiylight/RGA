@@ -207,7 +207,7 @@
           formData.append('userid',1)
           formData.append('quesPid',4)
           formData.append('quesId',16)
-          axios.post('/api/main/ans/addAnswer',formData,{}).then((response)=>{
+          axios.post('/api/main/ans/addClock',formData,{}).then((response)=>{
             console.log(response)
             this.$router.push('q1a')
             // if(response.data.code == '500'){
@@ -234,7 +234,7 @@
             maxH = image.naturalHeight / radio
             maxW = image.naturalWidth / radio
             const canvas2 = document.createElement('canvas')
-            
+
           })
         }
       }
