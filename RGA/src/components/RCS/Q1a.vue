@@ -39,7 +39,7 @@ export default{
   },
   methods: {
     onsubmit(){
-      this.$router.push('q1')
+      this.$router.push('res')
     }
   }
 }

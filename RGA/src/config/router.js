@@ -5,6 +5,7 @@ import Snaq from '../components/Snaq.vue'
 import Q1 from '../components/RCS/Q1.vue'
 import Q2 from '../components/RCS/Q2.vue'
 import Q1a from '../components/RCS/Q1a.vue'
+import Res from '../components/Res.vue'
 
 const routes = [
     {
@@ -34,6 +35,10 @@ const routes = [
     {
       path:'/q1a',
       component:Q1a
+    },
+    {
+      path:'/res',
+      component:Res
     }
 
   ]

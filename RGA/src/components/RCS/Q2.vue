@@ -29,16 +29,17 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   let canvas
   let context
-  let lineWidth = 0
+  let lineWidth = 15
   let isMousedown
   let points = []
   const strokeHistory = []
 
   // let $force 
   // let $touches
-  import axios from 'axios'
 
   export default{
     mounted(){
@@ -50,10 +51,11 @@
         context = canvas.getContext('2d')
         canvas.width = window.innerWidth * 2
         canvas.height = window.innerHeight * 2
-        console.log(window.innerHeight)
+        // console.log(window.innerHeight)
         context.lineWidth = 15
         context.beginPath();
         context.arc(window.innerWidth,window.innerHeight,window.innerHeight/1.6,0,2*Math.PI)
+        // context.arc(window.innerHeight,window.innerHeight,window.innerHeight/1.6,0,2*Math.PI)
         context.stroke()
         // $force = document.querySelectorAll('#force')[0]
         // $touches = document.querySelectorAll('#touches')[0]
@@ -92,6 +94,8 @@
         // console.log(strokeHistory)
         context.beginPath()
         context.arc(window.innerWidth,window.innerHeight,window.innerHeight/1.6,0,2*Math.PI)
+        // ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise);
+        
         context.stroke()
         let that = this
         strokeHistory.map(function (stroke) {
@@ -194,31 +198,66 @@
         }
 
         isMousedown = false
-        console.log(points)
+        console.log(canvas.width)
         requestIdleCallback(function () { strokeHistory.push([...points]); points = []})
-        lineWidth = 0
+        lineWidth = 15
       },
 
       // 下载
       // todo: 提交到服务器上
       onSubmit(){
         let MIME_TYPE = "image/png";
-        canvas.toBlob((blob)=>{
-          let formData = new FormData()
-          formData.append('file',blob)
-          formData.append('userid',1)
-          formData.append('quesPid',4)
-          formData.append('quesId',16)
-          axios.post('/',formData,{}).then((response)=>{
-            console.log(response)
-            this.$router.push('q1a')
-            // if(response.data.code == '500'){
-            //   condole.log('empty choice')
-            // }else if (response.data.code == '200'){
-            //   this.$router.push('q1a')
-            // }
+        let imgURL = canvas.toDataURL(MIME_TYPE)
+        // 压缩图片
+        const image = new Image()
+        image.src = imgURL;
+        image.addEventListener('load', function(e){
+          let radio = 4; //压缩比例
+          let maxH = (image.naturalHeight / (radio * 1.6)) + 2*lineWidth
+          let maxW = (image.naturalHeight / (radio * 1.6)) + 2*lineWidth
+          const canvas2 = document.createElement('canvas')
+          canvas2.height = maxH
+          canvas2.width = maxW
+          canvas2.setAttribute("id","_compres_")
+          canvas2.style.visibility = 'hidden'
+          document.body.appendChild(canvas2)
+
+          const ctx2 = canvas2.getContext('2d')
+          // canvas.clearRect() 方法清空给定矩形内的指定像素。(x1，y1，width,height)
+          ctx2.clearRect(0, 0, maxW, maxH)
+          // 只画时钟部分
+          // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+          ctx2.drawImage(image,
+           image.naturalWidth/2 - image.naturalHeight/3.2 - 0.5*lineWidth,
+           0.1875*image.naturalHeight - 0.5*lineWidth,
+           image.naturalHeight/1.6 + 1.5*lineWidth,
+           image.naturalHeight/1.6 +  1.5*lineWidth,
+           0,0,
+           maxW, maxH)
+          canvas2.toBlob((blob)=>{
+            console.log(blob.size,"压缩后大小")
           })
+          canvas2.toBlob((blob)=>{
+            let formData = new FormData()
+            formData.append('file',blob)
+            formData.append('userid',1)
+            formData.append('quesPid',4)
+            formData.append('quesId',16)
+            axios.post('/api/main/ans/addClock',formData,{}).then((response)=>{
+              console.log(response)
+              // this.$router.push('q1a')
+              if(response.data.code == '500'){
+                condole.log('empty data')
+              }else if (response.data.code == '200'){
+                this.$router.push('q1a')
+              }
+            })
+          })
+          canvas2.remove()
         })
+
+
+
         // let imgURL = canvas.toDataURL(MIME_TYPE)
         // let dlink = document.createElement('a')
         // dlink.download = 'pic'
@@ -228,17 +267,6 @@
         // dlink.click();
         // document.body.removeChild(dlink);
 
-        // todo: 压缩文件的函数
-        function compress(base64Img,callback){
-          const img = new Image()
-          img.addEventListener('load', function(e){
-            let radio = 2; //压缩比例
-            maxH = image.naturalHeight / radio
-            maxW = image.naturalWidth / radio
-            const canvas2 = document.createElement('canvas')
-
-          })
-        }
       }
     }
   }
