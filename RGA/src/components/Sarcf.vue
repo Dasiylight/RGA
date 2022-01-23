@@ -84,7 +84,14 @@ export default {
             <el-radio label=2>A lot or unable</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="4.  How many times have you fallen in the last year?">
+        <el-form-item label="4. How much difficulty do you have climbing a flight of ten stairs?">
+          <el-radio-group v-model="form.climb">
+            <el-radio label=0>None</el-radio>
+            <el-radio label=1>Some</el-radio>
+            <el-radio label=2>A lot or unable</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="5.  How many times have you fallen in the last year?">
           <el-radio-group v-model="form.fall">
             <el-radio label=0>None</el-radio>
             <el-radio label=1>1-3 Falls</el-radio>

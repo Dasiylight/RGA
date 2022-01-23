@@ -243,11 +243,11 @@
             formData.append('userid',1)
             formData.append('quesPid',4)
             formData.append('quesId',16)
-            axios.post('/api/main/ans/addClock',formData,{}).then((response)=>{
+            axios.post('/api/main/ans/addClock',formData).then((response)=>{
               console.log(response)
               // this.$router.push('q1a')
               if(response.data.code == '500'){
-                condole.log('empty data')
+                console.log('empty data')
               }else if (response.data.code == '200'){
                 this.$router.push('q1a')
               }
