@@ -22,7 +22,7 @@ const routes = [
     },
     {
       path:'/',
-      redirect:'/frail'
+      redirect:'/q2'
     },
     {
       path:'/q1',

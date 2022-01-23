@@ -7,12 +7,11 @@
       <canvas 
         id='draw' 
         @touchstart="onStart($event)"
-        @mousedown="onStart($event)"
+
         @touchmove='onMove($event)'
-        @mousemove='onMove($event)'
+
         @touchend='onEnd($event)'
-        @touchleave='onEnd($event)'
-        @mouseup="onEnd($event)"
+        @touchcancel='onEnd($event)'
       >
       Sorry, your browser is too old for this demo.
       </canvas>
@@ -33,7 +32,7 @@
 
   let canvas
   let context
-  let lineWidth = 15
+  let lineWidth = 5
   let isMousedown
   let points = []
   const strokeHistory = []
@@ -42,6 +41,11 @@
   // let $touches
 
   export default{
+    data(){
+      return{
+        count:0
+      }
+    },
     mounted(){
       this.init()
     },
@@ -52,7 +56,7 @@
         canvas.width = window.innerWidth * 2
         canvas.height = window.innerHeight * 2
         // console.log(window.innerHeight)
-        context.lineWidth = 15
+        context.lineWidth = 5
         context.beginPath();
         context.arc(window.innerWidth,window.innerHeight,window.innerHeight/1.6,0,2*Math.PI)
         // context.arc(window.innerHeight,window.innerHeight,window.innerHeight/1.6,0,2*Math.PI)
@@ -198,9 +202,16 @@
         }
 
         isMousedown = false
-        console.log(canvas.width)
-        requestIdleCallback(function () { strokeHistory.push([...points]); points = []})
-        lineWidth = 15
+        strokeHistory.push([...points]);
+        points = []
+        console.log('end')
+        // console.log(canvas.width)
+        // requestIdleCallback(function () { 
+        //  strokeHistory.push([...points]);
+        //  points = []
+        //  console.log('end')
+        //  })
+        lineWidth = 5
       },
 
       // 下载
@@ -210,6 +221,7 @@
         let imgURL = canvas.toDataURL(MIME_TYPE)
         // 压缩图片
         const image = new Image()
+        let _this = this
         image.src = imgURL;
         image.addEventListener('load', function(e){
           let radio = 4; //压缩比例
@@ -236,7 +248,8 @@
            maxW, maxH)
           let imgURL = canvas2.toDataURL(MIME_TYPE)
           let dlink = document.createElement('a')
-          dlink.download = 'pic'
+          dlink.download = 'pic'+ _this.count
+          _this.count++
           dlink.href = imgURL
           dlink.dataset.downloadurl = [MIME_TYPE, dlink.download, dlink.href].join(':');
           document.body.appendChild(dlink);
@@ -259,6 +272,14 @@
           //   })
           // })
           canvas2.remove()
+
+          context.clearRect(0, 0, canvas.width, canvas.height)
+
+          context.beginPath()
+          context.arc(window.innerWidth,window.innerHeight,window.innerHeight/1.6,0,2*Math.PI)
+          context.stroke()
+          strokeHistory = []
+          points = []
         })
 
 
