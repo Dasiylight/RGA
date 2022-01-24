@@ -1,7 +1,7 @@
 <template>
   <div>
     <p id='title'>
-        2. This is a clock face. Please put in the hour markers and the time at ten minutes to eleven o’clock
+        2. This is a clock face. Please put in the hour markers and the time at 11:10
     </p>
     <div id='container'>
       <canvas 
@@ -35,7 +35,7 @@
   let lineWidth = 5
   let isMousedown
   let points = []
-  const strokeHistory = []
+  let strokeHistory = []
 
   // let $force 
   // let $touches
